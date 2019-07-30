@@ -1,10 +1,10 @@
 module.exports = {
-  mysql: {
+  postgres: {
     host: 'localhost',
-    port: 3306,
-    database: 'jwt',
-    username: 'root',
-    password: 'root',
+    port: 5432,
+    database: 'books_db_test_task',
+    username: 'fusion',
+    password: 'fusion',
   },
   jwt: {
     jwtSecret: '$eCrEt',

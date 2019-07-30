@@ -1,13 +1,7 @@
 {
-  "name": "node-es6-jwt",
-  "version": "1.0.0",
-  "description": "Node ES6 JWT",
-  "author": "Mauricio Urraco <mauriurraco@gmail.com>",
-  "homepage": "https://github.com/murraco/",
-  "license": "MIT",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "node index.js",
     "test": "mocha"
   },
   "dependencies": {
@@ -20,6 +14,8 @@
     "jsonwebtoken": "^8.1.0",
     "mysql2": "^1.5.1",
     "nodemon": "^1.19.0",
+    "pg": "^7.12.0",
+    "pg-hstore": "^2.3.3",
     "sequelize": "^5.8.6",
     "uuid": "^3.3.2"
   },

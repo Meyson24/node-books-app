@@ -1,26 +1,14 @@
 const User = require('../models/User');
 
-function load(req, res, next, id) {
-  User.findById(id, { attributes: { exclude: ['password', 'refresh_token'] } }).then((user) => {
-    if (!user) {
-      res.status(404).json({ error: 'User not found' });
-    } else {
-      req.dbUser = user;
-      next();
-    }
-  }).catch((e) => {
-    res.status(500).json({ error: e.message });
-  });
-}
-
 function get(req, res) {
   return res.status(200).json(req.dbUser);
 }
 
 function create(req, res) {
+    const { username, password } = req.body;
   User.create({
-    username: req.body.username,
-    password: req.body.password,
+    username,
+    password
   }, { attributes: { exclude: ['refresh_token'] } }).then((newUser) => {
     res.status(201).json(newUser);
   }).catch((e) => {
@@ -55,5 +43,5 @@ async function remove(req, res) {
 }
 
 module.exports = {
-  load, get, create, update, list, remove,
+  get, create, update, list, remove,
 };

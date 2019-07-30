@@ -50,7 +50,7 @@ function refreshJWT(req, res, next) {
 
 function returnJWT(req, res) {
   if (req.dbUser && req.token) {
-    res.status(201).json({ token: req.token, refresh_token: req.dbUser.refresh_token });
+    res.status(200).json({ token: req.token, refresh_token: req.dbUser.refresh_token });
   } else {
     res.status(401).json({ error: 'Unauthorized' });
   }
