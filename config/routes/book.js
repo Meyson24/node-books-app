@@ -4,10 +4,13 @@ const bookCtrl = require('../../api/controllers/Book');
 
 const router = express.Router();
 
+router.route('/:bookId')
+    .get(bookCtrl.getBookById);
+
 router.route('/')
     .get(bookCtrl.list);
 
 router.route('/new')
-    .post(bookCtrl.create)
+    .post(bookCtrl.create);
 
 module.exports = router;

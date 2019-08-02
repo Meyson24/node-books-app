@@ -1,13 +1,13 @@
 const Book = require('../models/Book');
 
-function getBookById(req, res, next, id) {
-    Book.findById(id, {attributes: {exclude: ['title', 'description',  'price']}
+function getBookById(req, res) {
+    const {bookId} = req.params
+    Book.findByPk(bookId, {attributes: ['title', 'description',  'price']
     }).then((book) => {
         if (!book) {
             res.status(404).json({error: 'Book not found'});
         } else {
-      req.dbBook = book;
-      next();
+            res.status(200).json(book);
         }
     }).catch((e) => {
         res.status(500).json({error: e.message});
@@ -22,25 +22,38 @@ function create(req, res) {
         price
     }, {attributes: ['title', 'description', 'price']
     }).then((newBook) => {
-        res.status(201).json(newBook);
+        res.status(20).json(newBook);
     }).catch((e) => {
         res.status(500).json({error: e.message});
     });
 }
 
 function list(req, res) {
-    const {offset = 0, limit = 50} = req.query;
+    const {page, per_page, sortItem='Id', sortMethod='ASC'} = req.query;
+    let totalItems;
+    console.log('---------------------------------sortItem sortMethod', sortMethod, sortItem)
+    Book.count().then(res => {
+        if (res) {
+            totalItems = res;
+        }
+    }).catch(err => {
+        res.status(500).json({error: err.message})
+    });
     Book.findAll({
-        offset: offset,
-        limit: limit,
+        order: [
+            [sortItem.toLocaleLowerCase(), sortMethod],
+        ],
+        offset: (page*per_page)-per_page,
+        limit: per_page,
         attributes:  ['id', 'title', 'description', 'price'],
     }).then((books) => {
-        res.status(200).json(books);
+        const total = Math.ceil(totalItems/per_page)
+        const response = {pagination: {page, per_page, total}, books}
+        res.status(200).json(response);
     }).catch((e) => {
         res.status(500).json({error: e.message});
     });
 }
-
 
 module.exports = {
     getBookById, create, list,
